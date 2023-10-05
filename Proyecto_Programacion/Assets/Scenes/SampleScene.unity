@@ -9643,7 +9643,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   dash: 20
-  tempoDash: 0.2
+  timeDash: 0.2
+  timeToBreak: 4
 --- !u!95 &1833010546
 Animator:
   serializedVersion: 5
