@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BlockController : MonoBehaviour
 {
+    public LayerMask floorCap;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,15 +15,5 @@ public class BlockController : MonoBehaviour
     void Update()
     {
         
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Detecta la colisión con el personaje
-        if (collision.gameObject.CompareTag("Personaje"))
-        {
-            // Destruye el bloque cuando colisiona con el personaje
-            Destroy(gameObject);
-        }
     }
 }

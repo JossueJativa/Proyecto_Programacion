@@ -12,21 +12,25 @@ public class PlayerController : MonoBehaviour
     public LayerMask floorCap;
     public float dash;
     public float timeDash;
-    private bool breakBlock;
-    public float timeToBreak;
     // public int max_jumps;
 
     //Habilities conditions
     private bool hasDash = true;
     private bool canMove = true;
-    private float timePassBreak;
+    public GameObject bloquePrefab;
     // private int jumps_given;
 
     //Unity items
     private new Rigidbody2D rigidbody;
     private BoxCollider2D boxCollider2D;
     private bool orient = true;
-    private Animator animator; 
+    private Animator animator;
+
+    //Elementos del bloque
+    public float timeToDestroy;
+    private bool blockPlaced = false;
+    private List<GameObject> instantiatedBlocks = new List<GameObject>();
+
 
     private void Start()
     {
@@ -41,6 +45,7 @@ public class PlayerController : MonoBehaviour
     {
         Movement();
         Jumping();
+        PutBlocks();
     }
 
     //player habilities
@@ -87,26 +92,6 @@ public class PlayerController : MonoBehaviour
         hasDash = true;
     }
 
-    private void MouseClicked(){
-        //Buttons on the mouse (0) = Left (1) = Right (2) = Center
-        if (Input.GetMouseButtonDown(0)){
-            breakBlock = true;
-        }
-
-        if (breakBlock){
-            timePassBreak += Time.deltaTime;
-
-            if (timePassBreak >= timeToBreak){
-                BreakBlock();
-                breakBlock = false;
-                timePassBreak = 0;
-            }
-        }
-        else{
-            timePassBreak = 0;
-        }
-    }
-
     /* void hasDobleJumps(){
         if (isOnFloor()){
             jumps_given = max_jumps;
@@ -150,7 +135,39 @@ public class PlayerController : MonoBehaviour
         return raycastHit2D.collider != null;
     }
 
-    private void BreakBlock(){
+    private void PutBlocks()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            clickPos.z = 0;
 
+            // Crea una nueva instancia del bloque y almacénala en instantiatedBlock.
+            GameObject newBlock = Instantiate(bloquePrefab, clickPos, Quaternion.identity);
+            instantiatedBlocks.Add(newBlock);
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Vector3 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            clickPos.z = 0;
+
+            // Busca y destruye el bloque que esté en la posición del clic derecho.
+            GameObject blockToDestroy = null;
+            foreach (GameObject block in instantiatedBlocks)
+            {
+                if (Vector3.Distance(block.transform.position, clickPos) < 0.5f) // Ajusta el valor según el tamaño de tus bloques.
+                {
+                    blockToDestroy = block;
+                    break;
+                }
+            }
+
+            if (blockToDestroy != null)
+            {
+                instantiatedBlocks.Remove(blockToDestroy);
+                Destroy(blockToDestroy);
+            }
+        }
     }
 }
