@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -14,10 +15,15 @@ public class PlayerController : MonoBehaviour
     public float timeDash;
     // public int max_jumps;
 
+    //Enemys interactions
+    public float forceDirection;
+
     //Habilities conditions
     private bool hasDash = true;
     private bool canMove = true;
     public GameObject bloquePrefab;
+    private bool canMoveDamage = true;
+    private SpriteRenderer spriteRenderer;
     // private int jumps_given;
 
     //Unity items
@@ -31,12 +37,12 @@ public class PlayerController : MonoBehaviour
     private bool blockPlaced = false;
     private List<GameObject> instantiatedBlocks = new List<GameObject>();
 
-
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         // max_jumps = jumps_given;
     }
 
@@ -51,6 +57,8 @@ public class PlayerController : MonoBehaviour
     //player habilities
     private void Movement(){
         //Movement logic
+        if(!canMoveDamage)return;
+
         float isClicked = Input.GetAxis("Horizontal");
         //Teclas de input, -1 izquierda, +1 Derecha
 
@@ -169,5 +177,39 @@ public class PlayerController : MonoBehaviour
                 Destroy(blockToDestroy);
             }
         }
+    }
+
+    //ENemys interactions
+    public void DamageApply(){
+        canMoveDamage = false;
+
+        Vector2 kickDirection;
+
+        if (rigidbody.velocity.x > 0){
+            kickDirection = new Vector2(1, 1);
+        }
+        else{
+            kickDirection = new Vector2(-1,1);
+        }
+        rigidbody.AddForce(kickDirection * forceDirection);
+
+        StartCoroutine(WaitAndDoMovement(0.5f)); // Pasa 1.0f como el tiempo que se espera.
+    }
+
+    IEnumerator WaitAndDoMovement(float duration){
+        Color originalColor = spriteRenderer.color;
+        Color damagedColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
+
+        spriteRenderer.color = damagedColor;
+
+        yield return new WaitForSeconds(duration); // Espera el tiempo especificado.
+
+        spriteRenderer.color = originalColor; // Restaura el color original.
+
+        while (!isOnFloor()){
+            yield return null;
+        }
+
+        canMoveDamage = true;
     }
 }
