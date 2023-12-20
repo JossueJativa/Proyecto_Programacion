@@ -5,32 +5,32 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public float cooldownAtact;
-    private bool canAtact = true;
     private Rigidbody2D rb;
+    [SerializeField] private float velocity;
+    [SerializeField] private Vector2 direction = Vector2.right;
+    [SerializeField] private float timeTomove;
+    private Vector2[] directionPosibles = {Vector2.right, Vector2.left};
+
     private bool canJump = true;
-    public float moveSpeed;
-    public float jumpForce;
+    private bool canAtact = true;
+
+    public float jumpInterval;
+
+    [SerializeField] private float vida;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        StartCoroutine(CambiarDireccionPeriodicamente());
     }
 
     private void Update()
     {
-        movementEnemy();
+        movement();
     }
-
-    private void movementEnemy(){
-        // Mover automáticamente el slime horizontalmente
-        rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
-
-        // Permitir saltar si el slime está en el suelo
-        if (canJump)
-        {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            canJump = false;
-        }
+    
+    private void movement(){
+        transform.Translate(direction * velocity * Time.deltaTime);
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
@@ -38,12 +38,37 @@ public class EnemyController : MonoBehaviour
             if(!canAtact) return;
             canAtact = false;
 
-            other.gameObject.GetComponent<PlayerController>().DamageApply();
+            other.gameObject.GetComponent<PlayerController>().DamageApply(10);
             Invoke("ActiveAtact", cooldownAtact);
         }
     }
 
     void ActiveAtact(){
         canAtact = true;
+    }
+
+    private IEnumerator CambiarDireccionPeriodicamente()
+    {
+        while (true)
+        {
+            // Selecciona una nueva dirección aleatoria
+            direction = directionPosibles[Random.Range(0, directionPosibles.Length)];
+
+            // Espera el tiempo especificado antes de cambiar de dirección nuevamente
+            yield return new WaitForSeconds(timeTomove);
+        }
+    }
+
+    public void Takedamage(float damage){
+        vida -= damage;
+
+        if(vida <= 0){
+            TimeToDead();
+            Destroy(gameObject);
+        }
+    }
+
+    private IEnumerable TimeToDead(){
+        yield return new WaitForSeconds(0.1f);
     }
 }

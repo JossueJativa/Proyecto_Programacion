@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -13,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public LayerMask floorCap;
     public float dash;
     public float timeDash;
+    [SerializeField] private float life;
+    [SerializeField] private float maxLife;
+    [SerializeField] private COntrollerVida barraVida;
     // public int max_jumps;
 
     //Enemys interactions
@@ -34,17 +35,13 @@ public class PlayerController : MonoBehaviour
 
     //Elementos del bloque
     public float timeToDestroy;
-    private bool blockPlaced = false;
-    private List<GameObject> instantiatedBlocks = new List<GameObject>();
 
-    private void Start()
-    {
-        rigidbody = GetComponent<Rigidbody2D>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        // max_jumps = jumps_given;
-    }
+    //PVP
+    [SerializeField] private Transform controllerPunch;
+    [SerializeField] private float radioPunch;
+    [SerializeField] private float timesToAtact;
+    [SerializeField] private float nexAtact;
+    [SerializeField] private float damageForEnemy;
 
     // Update is called once per frame
     void Update()
@@ -145,45 +142,40 @@ public class PlayerController : MonoBehaviour
 
     private void PutBlocks()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && nexAtact <= 0)
         {
-            Vector3 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            clickPos.z = 0;
+            Golpe();
+            nexAtact = timesToAtact;
+            // Vector3 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // clickPos.z = 0;
 
-            // Crea una nueva instancia del bloque y almacénala en instantiatedBlock.
-            GameObject newBlock = Instantiate(bloquePrefab, clickPos, Quaternion.identity);
-            instantiatedBlocks.Add(newBlock);
+            // // Crea una nueva instancia del bloque y almacénala en instantiatedBlock.
+            // GameObject newBlock = Instantiate(bloquePrefab, clickPos, Quaternion.identity);
+            // instantiatedBlocks.Add(newBlock);
+        }
+        else if(nexAtact > 0){
+            nexAtact -= Time.deltaTime;
         }
 
         if (Input.GetMouseButtonDown(1))
         {
             Vector3 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             clickPos.z = 0;
-
-            // Busca y destruye el bloque que esté en la posición del clic derecho.
-            GameObject blockToDestroy = null;
-            foreach (GameObject block in instantiatedBlocks)
-            {
-                if (Vector3.Distance(block.transform.position, clickPos) < 0.5f) // Ajusta el valor según el tamaño de tus bloques.
-                {
-                    blockToDestroy = block;
-                    break;
-                }
-            }
-
-            if (blockToDestroy != null)
-            {
-                instantiatedBlocks.Remove(blockToDestroy);
-                Destroy(blockToDestroy);
-            }
         }
     }
 
     //ENemys interactions
-    public void DamageApply(){
+    public void DamageApply(float damage){
         canMoveDamage = false;
 
         Vector2 kickDirection;
+
+        // Quitar daño
+        life -= damage;
+        barraVida.ChangeLife(life);
+        if (life <= 0){
+            StartCoroutine(WaitTimeDead(0.6f));
+        }
 
         if (rigidbody.velocity.x > 0){
             kickDirection = new Vector2(1, 1);
@@ -192,24 +184,57 @@ public class PlayerController : MonoBehaviour
             kickDirection = new Vector2(-1,1);
         }
         rigidbody.AddForce(kickDirection * forceDirection);
-
-        StartCoroutine(WaitAndDoMovement(0.5f)); // Pasa 1.0f como el tiempo que se espera.
+        StartCoroutine(WaitAndDoMovement(0.7f));
     }
 
     IEnumerator WaitAndDoMovement(float duration){
-        Color originalColor = spriteRenderer.color;
-        Color damagedColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
-
-        spriteRenderer.color = damagedColor;
-
-        yield return new WaitForSeconds(duration); // Espera el tiempo especificado.
-
-        spriteRenderer.color = originalColor; // Restaura el color original.
+        animator.SetTrigger("Damage");
+        yield return new WaitForSeconds(duration);
 
         while (!isOnFloor()){
             yield return null;
         }
 
         canMoveDamage = true;
+    }
+
+    IEnumerator WaitTimeDead(float duration){
+        animator.SetTrigger("Dead");
+        yield return new WaitForSeconds(duration);
+
+        while (!isOnFloor()){
+            yield return null;
+        }
+
+        Destroy(gameObject);
+    }
+
+    //Damage
+    private void Golpe(){
+        animator.SetTrigger("golpe");
+        
+        Collider2D[] objectos = Physics2D.OverlapCircleAll(controllerPunch.position, radioPunch);
+
+        foreach(Collider2D collition in objectos){
+            if(collition.CompareTag("Enemy")){
+                collition.transform.GetComponent<EnemyController>().Takedamage(damageForEnemy);
+            }
+        }
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(controllerPunch.position, radioPunch);
+    }
+
+    private void Start()
+    {
+        rigidbody = GetComponent<Rigidbody2D>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        life = maxLife;
+        barraVida.StartLife(life);
+        // max_jumps = jumps_given;
     }
 }
