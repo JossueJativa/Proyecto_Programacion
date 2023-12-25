@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
     //Elementos del bloque
     public float timeToDestroy;
+    GameObject inventory_com;
 
     //PVP
     [SerializeField] private Transform controllerPunch;
@@ -42,6 +43,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float timesToAtact;
     [SerializeField] private float nexAtact;
     [SerializeField] private float damageForEnemy;
+
+    private void Start()
+    {
+        rigidbody = GetComponent<Rigidbody2D>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        life = maxLife;
+        barraVida.StartLife(life);
+        inventory_com = GameObject.FindGameObjectWithTag("Inventory");
+        // max_jumps = jumps_given;
+    }
 
     // Update is called once per frame
     void Update()
@@ -225,16 +238,5 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(controllerPunch.position, radioPunch);
-    }
-
-    private void Start()
-    {
-        rigidbody = GetComponent<Rigidbody2D>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        life = maxLife;
-        barraVida.StartLife(life);
-        // max_jumps = jumps_given;
     }
 }

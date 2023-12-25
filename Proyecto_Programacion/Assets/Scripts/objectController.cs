@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ObjectController : MonoBehaviour
 {
+    [SerializeField] private GameObject obj;
+    [SerializeField] private int cant;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +16,11 @@ public class ObjectController : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.CompareTag("Player")){
+            Destroy(gameObject);
+        }
     }
 }
