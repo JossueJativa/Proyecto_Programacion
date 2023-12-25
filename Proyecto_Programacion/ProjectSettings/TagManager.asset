@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy
   - Pickable_object
+  - GenerateEvent
+  - Slot
+  - Inventory
   layers:
   - Default
   - TransparentFX
