@@ -1082,6 +1082,7 @@ GameObject:
   m_Component:
   - component: {fileID: 556736192}
   - component: {fileID: 556736191}
+  - component: {fileID: 556736193}
   m_Layer: 0
   m_Name: GeneralEvent
   m_TagString: GenerateEvent
@@ -1101,19 +1102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad6226b22f7e6f418f6ddc5b211e4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &556736192
 Transform:
   m_ObjectHideFlags: 0
@@ -1129,6 +1117,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &556736193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556736190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30635c6ea59609140b32d0807201a98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slots: []
 --- !u!1 &571750023
 GameObject:
   m_ObjectHideFlags: 0
@@ -43210,6 +43211,14 @@ PrefabInstance:
     - target: {fileID: 1265167762817170015, guid: be36e254305b5a84a9323affc75a71b6, type: 3}
       propertyPath: m_Name
       value: Pick_block
+      objectReference: {fileID: 0}
+    - target: {fileID: 6029138987660112452, guid: be36e254305b5a84a9323affc75a71b6, type: 3}
+      propertyPath: obj
+      value: 
+      objectReference: {fileID: 7387488458535116122, guid: f694a4b738c33e04081aebf2dfd204aa, type: 3}
+    - target: {fileID: 6029138987660112452, guid: be36e254305b5a84a9323affc75a71b6, type: 3}
+      propertyPath: cant
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

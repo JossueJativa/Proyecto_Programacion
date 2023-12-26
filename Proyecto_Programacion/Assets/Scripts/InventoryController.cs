@@ -23,7 +23,25 @@ public class InventoryController : MonoBehaviour
         return this.slots;
     }
 
-    public void setSlots(){
+    public void setSlots(int pos, GameObject slot, int cant){
+        bool exist = false;
+
+        for (int i = 0; i < slots.Length; i++){
+            if (slots[i] != null && slots[i].tag == slot.tag){
+                int already_cant = slots[i].GetComponent<AtributesController>().getCant();
+                slots[i].GetComponent<AtributesController>().setCant(already_cant + cant);
+                exist = true;
+                break;
+            }
+        }
+
+        if(!exist){
+            slot.GetComponent<AtributesController>().setCant(cant);
+            this.slots[pos] = slot;
+        }
+    }
+
+    public void showInventory(){
         Component[] inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponentsInChildren<Transform>();
         bool slotIsUsed = false;
 
@@ -51,7 +69,16 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    public bool removeSlot(GameObject obj){
+    public bool removeSlot(GameObject[] obj){
+        for(int i = 1; i < obj.Length; i++){
+            GameObject child = obj[i].gameObject;
+            if(child.tag == "Slot" && child.transform.childCount > 0){
+                for(int e = 0; e <= 0; e++){
+                    Destroy(child.transform.GetChild(e).transform.gameObject);
+                }
+            }
+        }
+
         return true;
     }
 }

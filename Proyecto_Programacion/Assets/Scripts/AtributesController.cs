@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class AtributesController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    [SerializeField] private int cant;    
+
+    public int getCant(){
+        return this.cant;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void setCant(int cant){
+        this.cant = cant;
     }
 }

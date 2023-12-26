@@ -20,7 +20,15 @@ public class ObjectController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.CompareTag("Player")){
-            Destroy(gameObject);
+            GameObject[] inventory = GameObject.FindGameObjectWithTag("GenerateEvent").GetComponent<InventoryController>().getSlots();
+
+            for(int i = 0; i < inventory.Length; i++){
+                if(!inventory[i]){
+                    GameObject.FindGameObjectWithTag("GenerateEvent").GetComponent<InventoryController>().setSlots(i, obj, cant);
+                    Destroy(gameObject);
+                    break;
+                }
+            }
         }
     }
 }
