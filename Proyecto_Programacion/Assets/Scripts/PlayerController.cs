@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float timesToAtact;
     [SerializeField] private float nexAtact;
     [SerializeField] private float damageForEnemy;
+    private bool can_build;
+    private ConstructionController constructionController;
 
     private void Start()
     {
@@ -55,6 +57,12 @@ public class PlayerController : MonoBehaviour
         life = maxLife;
         barraVida.StartLife(life);
         inventory_com = GameObject.FindGameObjectWithTag("Inventory");
+        constructionController = GetComponent<ConstructionController>();
+        // Asegúrate de que la referencia no sea null antes de usarla
+        if (constructionController == null)
+        {
+            Debug.LogError("ConstructionController not found on the PlayerController GameObject.");
+        }
         // max_jumps = jumps_given;
     }
 
@@ -63,7 +71,7 @@ public class PlayerController : MonoBehaviour
     {
         Movement();
         Jumping();
-        PutBlocks();
+        AttacEnemys();
         SelectItemInventory();
     }
 
@@ -156,18 +164,12 @@ public class PlayerController : MonoBehaviour
         return raycastHit2D.collider != null;
     }
 
-    private void PutBlocks()
+    private void AttacEnemys()
     {
         if (Input.GetMouseButtonDown(0) && nexAtact <= 0)
         {
             Golpe();
             nexAtact = timesToAtact;
-            // Vector3 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            // clickPos.z = 0;
-
-            // // Crea una nueva instancia del bloque y almacénala en instantiatedBlock.
-            // GameObject newBlock = Instantiate(bloquePrefab, clickPos, Quaternion.identity);
-            // instantiatedBlocks.Add(newBlock);
         }
         else if(nexAtact > 0){
             nexAtact -= Time.deltaTime;
@@ -180,7 +182,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //ENemys interactions
+    //Enemys interactions
     public void DamageApply(float damage){
         canMoveDamage = false;
 

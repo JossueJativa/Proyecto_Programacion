@@ -17,17 +17,20 @@ public class ConstructionController : MonoBehaviour
     [SerializeField] private int selector;
     [SerializeField] private float maxBuildDistance = 5f;  
     [SerializeField] private Transform player;
+    private bool can_build;
 
     // Start is called before the first frame update
     void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
+        can_build = false;  // Asegúrate de que no pueda construir al inicio
+        sprite.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     private void FixedUpdate()
@@ -92,18 +95,20 @@ public class ConstructionController : MonoBehaviour
 
         transform.position = new Vector2(positionDefX, positionDefY);
 
-        if (Input.GetMouseButtonDown(0) && construct)
-        {
-            GameObject newBlock = Instantiate(blocks[selector], transform.position, transform.rotation);
-            createdBlocks.Add(newBlock);  // Agregar la nueva instancia a la lista
-        }
-        else if (Input.GetMouseButtonDown(1) && !construct)
-        {
-            // Verificar si la instancia a destruir está en la lista
-            if (createdBlocks.Contains(ultimateColition))
+        if (can_build){
+            if (Input.GetMouseButtonDown(0) && construct)
             {
-                Destroy(ultimateColition);
-                createdBlocks.Remove(ultimateColition);
+                GameObject newBlock = Instantiate(blocks[selector], transform.position, transform.rotation);
+                createdBlocks.Add(newBlock);  // Agregar la nueva instancia a la lista
+            }
+            else if (Input.GetMouseButtonDown(1) && !construct)
+            {
+                // Verificar si la instancia a destruir está en la lista
+                if (createdBlocks.Contains(ultimateColition))
+                {
+                    Destroy(ultimateColition);
+                    createdBlocks.Remove(ultimateColition);
+                }
             }
         }
     }
@@ -119,5 +124,29 @@ public class ConstructionController : MonoBehaviour
     {
         sprite.color = new Color(0, 255, 0, 255);
         construct = true;
+    }
+
+    //Activar bloque
+    public void activateBlock()
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = true;
+        }
+        
+        can_build = true;
+    }
+
+    //Desactivar bloque
+    public void deactivateBlock()
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = false;
+        }
+
+        can_build = false;
     }
 }

@@ -8,6 +8,16 @@ public class AtributesController : MonoBehaviour
     [SerializeField] private int cant;
     [SerializeField] private String type;
     [SerializeField] private String subtype;
+    private ConstructionController constructionController;
+
+    private void Start()
+    {
+        constructionController = GameObject.FindObjectOfType<ConstructionController>();
+        if (constructionController == null)
+        {
+            Debug.LogError("ConstructionController not found in the scene.");
+        }
+    }
 
     public int getCant(){
         return this.cant;
@@ -17,8 +27,16 @@ public class AtributesController : MonoBehaviour
         this.cant = cant;
     }
 
+    public String getType(){
+        return this.type;
+    }
+
+    public String getSubtype(){
+        return this.subtype;
+    }
     public void Action(){
         if(type == "block"){
+            constructionController.activateBlock();
             if (subtype == "magma"){
                 Debug.Log("Magma");
             }
@@ -27,14 +45,16 @@ public class AtributesController : MonoBehaviour
             }
         }
         else if(type == "Potion"){
+            constructionController.deactivateBlock();
             if(subtype == "life"){
-                Debug.Log("Life");
+                Debug.Log("Life");    
             }
             else if(subtype == "mana"){
                 Debug.Log("Mana");
             }
         }
         else if(type == "Weapon"){
+            constructionController.deactivateBlock();
             if(subtype == "sword"){
                 Debug.Log("Sword");
             }
