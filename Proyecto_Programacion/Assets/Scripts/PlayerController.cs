@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
     private BoxCollider2D boxCollider2D;
     private bool orient = true;
     private Animator animator;
+    private int selectedSlotIndex;
 
     //Elementos del bloque
     public float timeToDestroy;
@@ -62,6 +64,7 @@ public class PlayerController : MonoBehaviour
         Movement();
         Jumping();
         PutBlocks();
+        SelectItemInventory();
     }
 
     //player habilities
@@ -238,5 +241,63 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(controllerPunch.position, radioPunch);
+    }
+
+    private void SelectItemInventory(){
+        GameObject[] slots = GameObject.FindGameObjectsWithTag("Slot")
+                                    .OrderBy(slot => slot.name)
+                                    .ToArray();
+        if(Input.GetKeyUp(KeyCode.Alpha1)){
+            if(slots[0].transform.childCount > 0){
+                slots[0].GetComponentInChildren<AtributesController>().Action();
+            }
+        }
+        else if(Input.GetKeyUp(KeyCode.Alpha2)){
+            if(slots[1].transform.childCount > 0){
+                slots[1].GetComponentInChildren<AtributesController>().Action();
+            }
+        }
+        else if(Input.GetKeyUp(KeyCode.Alpha3)){
+            if(slots[2].transform.childCount > 0){
+                slots[2].GetComponentInChildren<AtributesController>().Action();
+            }
+        }
+        else if(Input.GetKeyUp(KeyCode.Alpha4)){
+            if(slots[3].transform.childCount > 0){
+                slots[3].GetComponentInChildren<AtributesController>().Action();
+            }
+        }
+        else if(Input.GetKeyUp(KeyCode.Alpha5)){
+            selectedSlotIndex = 4;
+            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+        }
+        else if(Input.GetKeyUp(KeyCode.Alpha6)){
+            selectedSlotIndex = 5;
+            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+        }
+        else if(Input.GetKeyUp(KeyCode.Alpha7)){
+            selectedSlotIndex = 6;
+            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+        }
+        else if(Input.GetKeyUp(KeyCode.Alpha8)){
+            selectedSlotIndex = 7;
+            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+        }
+        else if(Input.GetKeyUp(KeyCode.Alpha9)){
+            selectedSlotIndex = 8;
+            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+        }
+        else if(Input.GetKeyUp(KeyCode.Alpha0)){
+            selectedSlotIndex = 9;
+            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+        }
+        else if(Input.GetKeyUp(KeyCode.X)){
+            selectedSlotIndex = 10;
+            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+        }
+        else if(Input.GetKeyUp(KeyCode.C)){
+            selectedSlotIndex = 11;
+            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+        }
     }
 }

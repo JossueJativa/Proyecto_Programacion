@@ -216,3 +216,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cant: 0
+  type: Weapon
+  subtype: sword

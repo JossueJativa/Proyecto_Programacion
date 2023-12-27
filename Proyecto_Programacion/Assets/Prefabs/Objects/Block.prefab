@@ -215,3 +215,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fea042fc6b0da34bb451835c73c4d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cant: 0
+  type: Block
+  subtype: magma
