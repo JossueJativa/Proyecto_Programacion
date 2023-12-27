@@ -268,36 +268,44 @@ public class PlayerController : MonoBehaviour
             }
         }
         else if(Input.GetKeyUp(KeyCode.Alpha5)){
-            selectedSlotIndex = 4;
-            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+            if(slots[4].transform.childCount > 0){
+                slots[4].GetComponentInChildren<AtributesController>().Action();
+            }
         }
         else if(Input.GetKeyUp(KeyCode.Alpha6)){
-            selectedSlotIndex = 5;
-            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+            if(slots[5].transform.childCount > 0){
+                slots[5].GetComponentInChildren<AtributesController>().Action();
+            }
         }
         else if(Input.GetKeyUp(KeyCode.Alpha7)){
-            selectedSlotIndex = 6;
-            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+            if(slots[6].transform.childCount > 0){
+                slots[6].GetComponentInChildren<AtributesController>().Action();
+            }
         }
         else if(Input.GetKeyUp(KeyCode.Alpha8)){
-            selectedSlotIndex = 7;
-            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+            if(slots[7].transform.childCount > 0){
+                slots[7].GetComponentInChildren<AtributesController>().Action();
+            }
         }
         else if(Input.GetKeyUp(KeyCode.Alpha9)){
-            selectedSlotIndex = 8;
-            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+            if(slots[8].transform.childCount > 0){
+                slots[8].GetComponentInChildren<AtributesController>().Action();
+            }
         }
         else if(Input.GetKeyUp(KeyCode.Alpha0)){
-            selectedSlotIndex = 9;
-            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+            if(slots[9].transform.childCount > 0){
+                slots[9].GetComponentInChildren<AtributesController>().Action();
+            }
         }
         else if(Input.GetKeyUp(KeyCode.X)){
-            selectedSlotIndex = 10;
-            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+            if(slots[10].transform.childCount > 0){
+                slots[10].GetComponentInChildren<AtributesController>().Action();
+            }
         }
         else if(Input.GetKeyUp(KeyCode.C)){
-            selectedSlotIndex = 11;
-            slots[selectedSlotIndex].GetComponent<AtributesController>().Action();
+            if(slots[11].transform.childCount > 0){
+                slots[11].GetComponentInChildren<AtributesController>().Action();
+            }
         }
     }
 }

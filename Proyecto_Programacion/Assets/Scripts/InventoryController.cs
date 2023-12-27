@@ -59,7 +59,8 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    public void showInventory(){
+    public void showInventory()
+    {
         GameObject[] slots = GameObject.FindGameObjectsWithTag("Slot")
                                         .OrderBy(slot => slot.name)
                                         .ToArray();
