@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float timesToAtact;
     [SerializeField] private float nexAtact;
     [SerializeField] private float damageForEnemy;
-    private bool can_build;
+    private bool can_attack;
     private ConstructionController constructionController;
 
     private void Start()
@@ -57,12 +57,7 @@ public class PlayerController : MonoBehaviour
         life = maxLife;
         barraVida.StartLife(life);
         inventory_com = GameObject.FindGameObjectWithTag("Inventory");
-        constructionController = GetComponent<ConstructionController>();
-        // Asegúrate de que la referencia no sea null antes de usarla
-        if (constructionController == null)
-        {
-            Debug.LogError("ConstructionController not found on the PlayerController GameObject.");
-        }
+        can_attack = false;
         // max_jumps = jumps_given;
     }
 
@@ -71,7 +66,8 @@ public class PlayerController : MonoBehaviour
     {
         Movement();
         Jumping();
-        AttacEnemys();
+        if(can_attack)
+            AttacEnemys();
         SelectItemInventory();
     }
 
@@ -309,5 +305,13 @@ public class PlayerController : MonoBehaviour
                 slots[11].GetComponentInChildren<AtributesController>().Action();
             }
         }
+    }
+
+    public void activateAttack(){
+        can_attack = true;
+    }
+
+    public void deactivateAttack(){
+        can_attack = false;
     }
 }

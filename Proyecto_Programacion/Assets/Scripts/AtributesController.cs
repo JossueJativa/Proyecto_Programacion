@@ -9,14 +9,12 @@ public class AtributesController : MonoBehaviour
     [SerializeField] private String type;
     [SerializeField] private String subtype;
     private ConstructionController constructionController;
+    private PlayerController playerController;
 
     private void Start()
     {
         constructionController = GameObject.FindObjectOfType<ConstructionController>();
-        if (constructionController == null)
-        {
-            Debug.LogError("ConstructionController not found in the scene.");
-        }
+        playerController = GameObject.FindObjectOfType<PlayerController>();
     }
 
     public int getCant(){
@@ -37,6 +35,7 @@ public class AtributesController : MonoBehaviour
     public void Action(){
         if(type == "block"){
             constructionController.activateBlock();
+            playerController.deactivateAttack();
             if (subtype == "magma"){
                 Debug.Log("Magma");
             }
@@ -46,6 +45,7 @@ public class AtributesController : MonoBehaviour
         }
         else if(type == "Potion"){
             constructionController.deactivateBlock();
+            playerController.deactivateAttack();
             if(subtype == "life"){
                 Debug.Log("Life");    
             }
@@ -55,6 +55,7 @@ public class AtributesController : MonoBehaviour
         }
         else if(type == "Weapon"){
             constructionController.deactivateBlock();
+            playerController.activateAttack();
             if(subtype == "sword"){
                 Debug.Log("Sword");
             }
