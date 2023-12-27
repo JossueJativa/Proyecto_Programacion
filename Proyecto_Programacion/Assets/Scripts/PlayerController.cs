@@ -62,7 +62,6 @@ public class PlayerController : MonoBehaviour
         Movement();
         Jumping();
         PutBlocks();
-        GameObject.FindGameObjectWithTag("GenerateEvent").GetComponent<InventoryController>().showInventory();
     }
 
     //player habilities

@@ -24,10 +24,8 @@ public class ObjectController : MonoBehaviour
 
             for(int i = 0; i < inventory.Length; i++){
                 if(!inventory[i]){
-                    print(i);
-                    print(obj);
-                    print(cant);
                     GameObject.FindGameObjectWithTag("GenerateEvent").GetComponent<InventoryController>().setSlots(i, obj, cant);
+                    GameObject.FindGameObjectWithTag("GenerateEvent").GetComponent<InventoryController>().showInventory();
                     Destroy(gameObject);
                     break;
                 }
