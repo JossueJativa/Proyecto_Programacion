@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2697220672234686305}
   - component: {fileID: 8069878975706033761}
   m_Layer: 0
-  m_Name: Block
+  m_Name: Potion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6f9fd6534235d704d98f8eed927c0222, type: 3}
+  m_Sprite: {fileID: 1736436243, guid: 288075ac9f9f8684ca1187935c18a67a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -216,5 +216,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cant: 0
-  type: block
-  subtype: magma
+  type: Potion
+  subtype: life

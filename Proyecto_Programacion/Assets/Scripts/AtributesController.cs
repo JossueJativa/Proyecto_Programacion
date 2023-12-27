@@ -18,8 +18,8 @@ public class AtributesController : MonoBehaviour
     }
 
     public void Action(){
-        if(type == "Block"){
-            if (type == "magma"){
+        if(type == "block"){
+            if (subtype == "magma"){
                 Debug.Log("Magma");
             }
             else if(type == "dirt"){
